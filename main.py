@@ -20,15 +20,32 @@ def get_top_judoka():
     competitors = []
     for i in range(1, 15):
         for n in range(0, 71):
-            print(data["categories"][str(i)]["competitors"][n]["family_name"], data["categories"][str(i)]["competitors"][n]["points"])
+            cid = data["categories"][str(i)]["competitors"][n]["id_person"]
+            data["categories"][str(i)]["competitors"][n].update(get_add_info(cid))
+            print(data["categories"][str(i)]["competitors"][n]["family_name"], data["categories"][str(i)]["competitors"][n]["points"], data["categories"][str(i)]["competitors"][n]["weight_name"], data["categories"][str(i)]["competitors"][n]["ftechnique"])
+            #print(type(data["categories"][str(i)]["competitors"][n]))
         competitors += data["categories"][str(i)]["competitors"]
 
 
     print(len(competitors))
+    return competitors
+
+def get_add_info(str_id):
+    page = requests.get(baseurl + str_id)
+    data = json.loads(page.text)
+
+    add_info = {}
+    add_info["ftechnique"] = data["ftechique"]
+    add_info["side"] = data["side"]
+    add_info["height"] = data["height"]
+    return add_info
+
 
 if __name__ == "__main__":
     page = requests.get(url)
     print(page.text)
     data = json.loads(page.text)
 
+
     get_top_judoka()
+    get_add_info("2239")
