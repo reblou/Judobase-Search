@@ -3,6 +3,7 @@
 from bs4 import BeautifulSoup
 import requests
 import json
+import psycopg2
 
 baseurl = 'https://data.ijf.org/api/get_json?access_token=&params[action]=competitor.info&params[__ust]=&params[id_person]='
 competitor = '#/competitor/profile/1540/basic_info'
@@ -12,6 +13,29 @@ num_judoka = 44735
 api_url = "https://data.ijf.org/api/get_json?access_token="
 
 url = 'https://data.ijf.org/api/get_json?access_token=&params[action]=competitor.info&params[__ust]=&params[id_person]=1540'
+
+def populate_database():
+    conn = psycopg2.connect(database="judoka")
+    c = conn.cursor()
+    judoka = get_top_judoka()
+    print("type judoka:", type(judoka))
+    print(judoka)
+    for j in judoka:
+        categories = ""
+        print("type:", type(j))
+        print("j:", j)
+        try:
+            c.execute("""INSERT INTO judoka VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)""",
+            (int(j["id_person"]), j["family_name"], j["given_name"], j["gender"], j["ftechnique"], j["side"], int(j["height"]), int(j["age"]), j["country"], j["weight_name"])
+            )
+            conn.commit()
+        except:
+            print("error inserting: ", j)
+
+    conn.commit()
+    conn.close()
+    return
+
 
 def get_top_judoka():
     page = requests.get(api_url + "&params[action]=wrl.by_category&params[__ust]=&params[limit]=1000&params[gender]=&params[part]=info%2Cpoints")
@@ -24,7 +48,7 @@ def get_top_judoka():
             data["categories"][str(i)]["competitors"][n].update(get_add_info(cid))
             print(data["categories"][str(i)]["competitors"][n]["family_name"], data["categories"][str(i)]["competitors"][n]["points"], data["categories"][str(i)]["competitors"][n]["weight_name"], data["categories"][str(i)]["competitors"][n]["ftechnique"])
             #print(type(data["categories"][str(i)]["competitors"][n]))
-        competitors += data["categories"][str(i)]["competitors"]
+            competitors.append(data["categories"][str(i)]["competitors"][n])
 
 
     print(len(competitors))
@@ -38,6 +62,7 @@ def get_add_info(str_id):
     add_info["ftechnique"] = data["ftechique"]
     add_info["side"] = data["side"]
     add_info["height"] = data["height"]
+    add_info["age"] = data["age"]
     return add_info
 
 
@@ -47,5 +72,6 @@ if __name__ == "__main__":
     data = json.loads(page.text)
 
 
-    get_top_judoka()
-    get_add_info("2239")
+    #get_top_judoka()
+    #get_add_info("2239")
+    populate_database()
