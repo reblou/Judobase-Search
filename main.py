@@ -23,15 +23,16 @@ def populate_database():
     for j in judoka:
         categories = ""
         print("type:", type(j))
-        print("j:", j)
+        #print("j:", j)
         try:
             c.execute("""INSERT INTO judoka VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)""",
             (int(j["id_person"]), j["family_name"], j["given_name"], j["gender"], j["ftechnique"], j["side"], int(j["height"]), int(j["age"]), j["country"], j["weight_name"])
             )
+        except Exception as e:
+            print("--error inserting: ", j, "--")
+            print(e)
             conn.commit()
-        except:
-            print("error inserting: ", j)
-
+    print("len judoka:", len(judoka))
     conn.commit()
     conn.close()
     return
@@ -46,7 +47,7 @@ def get_top_judoka():
         for n in range(0, 71):
             cid = data["categories"][str(i)]["competitors"][n]["id_person"]
             data["categories"][str(i)]["competitors"][n].update(get_add_info(cid))
-            print(data["categories"][str(i)]["competitors"][n]["family_name"], data["categories"][str(i)]["competitors"][n]["points"], data["categories"][str(i)]["competitors"][n]["weight_name"], data["categories"][str(i)]["competitors"][n]["ftechnique"])
+            #print(data["categories"][str(i)]["competitors"][n]["family_name"], data["categories"][str(i)]["competitors"][n]["points"], data["categories"][str(i)]["competitors"][n]["weight_name"], data["categories"][str(i)]["competitors"][n]["ftechnique"])
             #print(type(data["categories"][str(i)]["competitors"][n]))
             competitors.append(data["categories"][str(i)]["competitors"][n])
 

@@ -1,7 +1,7 @@
 DROP table judoka;
 
 CREATE TABLE judoka (
-    ID INT PRIMARY KEY,
+    ID INT,
     family_name TEXT,
     given_name TEXT,
     gender TEXT,
