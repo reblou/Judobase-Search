@@ -22,8 +22,6 @@ def populate_database():
     print(judoka)
     for j in judoka:
         categories = ""
-        print("type:", type(j))
-        #print("j:", j)
         try:
             c.execute("""INSERT INTO judoka VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)""",
             (int(j["id_person"]), j["family_name"], j["given_name"], j["gender"], j["ftechnique"], j["side"], int(j["height"]), int(j["age"]), j["country"], j["weight_name"])
@@ -32,7 +30,7 @@ def populate_database():
             print("--error inserting: ", j, "--")
             print(e)
             conn.commit()
-    print("len judoka:", len(judoka))
+    print("Judoka added:", len(judoka))
     conn.commit()
     conn.close()
     return
@@ -68,11 +66,14 @@ def get_add_info(str_id):
 
 
 if __name__ == "__main__":
-    page = requests.get(url)
-    print(page.text)
-    data = json.loads(page.text)
+    try:
+        args = sys.argv
+        print(args)
+    except:
+        print("Please enter a search as an argument")
+        exit()
+
 
 
     #get_top_judoka()
     #get_add_info("2239")
-    populate_database()
