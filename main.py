@@ -41,21 +41,29 @@ def get_top_judoka():
     print(page.text)
     data = json.loads(page.text)
     competitors = []
+    print(data)
+    for key in data:
+        print(key)
+    """
     for i in range(1, 15):
         for n in range(0, 71):
             cid = data["categories"][str(i)]["competitors"][n]["id_person"]
-            data["categories"][str(i)]["competitors"][n].update(get_add_info(cid))
+            #data["categories"][str(i)]["competitors"][n].update(get_add_info(cid))
+
             #print(data["categories"][str(i)]["competitors"][n]["family_name"], data["categories"][str(i)]["competitors"][n]["points"], data["categories"][str(i)]["competitors"][n]["weight_name"], data["categories"][str(i)]["competitors"][n]["ftechnique"])
             #print(type(data["categories"][str(i)]["competitors"][n]))
-            competitors.append(data["categories"][str(i)]["competitors"][n])
+            #competitors.append(data["categories"][str(i)]["competitors"][n])
+    """
 
 
     print(len(competitors))
+    print("------")
     return competitors
 
 def get_add_info(str_id):
     page = requests.get(baseurl + str_id)
     data = json.loads(page.text)
+    print(data)
 
     add_info = {}
     add_info["ftechnique"] = data["ftechique"]
@@ -66,14 +74,5 @@ def get_add_info(str_id):
 
 
 if __name__ == "__main__":
-    try:
-        args = sys.argv
-        print(args)
-    except:
-        print("Please enter a search as an argument")
-        exit()
-
-
-
-    #get_top_judoka()
+    get_top_judoka()
     #get_add_info("2239")

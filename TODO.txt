@@ -1,0 +1,3 @@
+TODO:
+-save judoka info as json text file.
+-better search functionality
