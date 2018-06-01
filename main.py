@@ -38,40 +38,29 @@ def populate_database():
 
 def get_top_judoka():
     page = requests.get(api_url + "&params[action]=wrl.by_category&params[__ust]=&params[limit]=1000&params[gender]=&params[part]=info%2Cpoints")
-    print(page.text)
+    #print(page.text)
     data = json.loads(page.text)
-    competitors = []
-    print(data)
-    for key in data:
-        print(key)
-    """
+    final = {}
+    final["competitors"] = {}
     for i in range(1, 15):
-        for n in range(0, 71):
+        for n in range(0, 11):
+            print("n:", n)
             cid = data["categories"][str(i)]["competitors"][n]["id_person"]
             #data["categories"][str(i)]["competitors"][n].update(get_add_info(cid))
+            """ Need to add to competitors rather than overwriting each time. """
+            final["competitors"].update(get_add_info(cid))
 
             #print(data["categories"][str(i)]["competitors"][n]["family_name"], data["categories"][str(i)]["competitors"][n]["points"], data["categories"][str(i)]["competitors"][n]["weight_name"], data["categories"][str(i)]["competitors"][n]["ftechnique"])
             #print(type(data["categories"][str(i)]["competitors"][n]))
             #competitors.append(data["categories"][str(i)]["competitors"][n])
-    """
 
-
-    print(len(competitors))
     print("------")
-    return competitors
+    print(final)
+    return final
 
 def get_add_info(str_id):
     page = requests.get(baseurl + str_id)
-    data = json.loads(page.text)
-    print(data)
-
-    add_info = {}
-    add_info["ftechnique"] = data["ftechique"]
-    add_info["side"] = data["side"]
-    add_info["height"] = data["height"]
-    add_info["age"] = data["age"]
-    return add_info
-
+    return json.loads(page.text)
 
 if __name__ == "__main__":
     get_top_judoka()
