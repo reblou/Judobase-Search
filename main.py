@@ -40,7 +40,7 @@ def read_from_file():
 
 if __name__ == "__main__":
     d = read_from_file()
-    for i in d["competitors"]:
-        print(d["competitors"][i])
+    #for i in d["competitors"]:
+    #    print(d["competitors"][i])
     #d = get_top_judoka()
     #print_to_file(d)
