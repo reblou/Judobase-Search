@@ -1,6 +1,3 @@
 TODO:
--save judoka info as json text file.
 -better search functionality
--desired fields in competitors json file:
-    -place in weight category
-    -points
+-sort output by points

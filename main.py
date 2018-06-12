@@ -19,10 +19,13 @@ def get_top_judoka():
     final = {}
     final["competitors"] = {}
     for i in range(1, 15):
-        for n in range(0, 6):
-            print("n:", n)
+        for n in range(0, 11):
+            print("n:", (i-1)*10 + n + (i-1))
             cid = data["categories"][str(i)]["competitors"][n]["id_person"]
             final["competitors"][cid] = get_add_info(cid)
+            #final["competitors"][cid].update(data["categories"][str(i)]["competitors"][n])
+            final["competitors"][cid]["points"] = data["categories"][str(i)]["competitors"][n]["points"]
+            final["competitors"][cid]["place"] = data["categories"][str(i)]["competitors"][n]["place"]
 
     return final
 
@@ -32,15 +35,15 @@ def get_add_info(str_id):
 
 def print_to_file(d):
     with open("data.json", "w") as f:
-        json.dump(d, f, ensure_ascii=False)
+        f.write(json.dumps(d, indent=2, sort_keys=True))
 
 def read_from_file():
     with open("data.json", "r") as f:
         return json.loads(f.read())
 
 if __name__ == "__main__":
-    d = read_from_file()
+    #d = read_from_file()
     #for i in d["competitors"]:
     #    print(d["competitors"][i])
-    #d = get_top_judoka()
-    #print_to_file(d)
+    d = get_top_judoka()
+    print_to_file(d)
