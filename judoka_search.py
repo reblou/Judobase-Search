@@ -7,20 +7,31 @@ import re
 def search_technique(data, technique):
     for id, judoka in data["competitors"].items():
         if (re.match(technique, judoka['ftechique'])):
-            print(id)
-            print(data["competitors"][id]["family_name"])
+            #print(id)
+            #print(data["competitors"][id]["family_name"])
+            print_results(data["competitors"][id], id)
 
 """ Makes regex for maching argument to data technique name."""
 def make_regex(argu):
-    rx = "[" + argu[0].upper()
+    rx = ".*[" + argu[0].upper()
     rx += argu[0] + "]"
     for char in argu[1:]:
-        rx += char + "-*"
+        rx += char + "-*.*"
 
     return rx
 
 def print_results(data, id):
-    # wc(s), country, name, place/points, id, height, age, gender
+    # wc(s)
+
+    print("--", id, ":", data["given_name"], data["family_name"])
+    print("\t" + data["ftechique"])
+    print("\t" + data["gender"])
+    print("\t" + data["age"], "years old")
+    print("\t" + data["height"] + "cm")
+    print("\t" + data["country"])
+    print("\t" + data["points"], "points")
+    print("\t" + data["place"], "place")
+    #print("\t" + data["categories"])
     print()
 
 
