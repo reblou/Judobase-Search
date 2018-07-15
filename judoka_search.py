@@ -13,11 +13,14 @@ def search_technique(data, technique):
 
 """ Makes regex for maching argument to data technique name."""
 def make_regex(argu):
-    rx = ".*[" + argu[0].upper()
-    rx += argu[0] + "]"
-    for char in argu[1:]:
-        rx += char + "-*.*"
+    rx = ".*"
+    for char in argu:
+        rx += "[" + char.swapcase()
+        rx += char + "]"
+        rx += "-*"
+    rx += ".*"
 
+    print(rx)
     return rx
 
 def print_results(data, id):
@@ -30,7 +33,7 @@ def print_results(data, id):
     print("\t" + data["height"] + "cm")
     print("\t" + data["country"])
     print("\t" + data["points"], "points")
-    print("\t" + data["place"], "place")
+    print("\t" + data["place"] + "th", "place")
     #print("\t" + data["categories"])
     print()
 
